@@ -16,10 +16,12 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: []
     jobs:
-    - template: yaml-templates/build.yml  # Template reference
-      parameters:
-        solution: $(solution)
-        buildPlatform: $(buildPlatform)
-        buildConfiguration: $(buildConfiguration)
-    - template: yaml-templates/release.yml  # Template reference
-      dependsOn: yaml-templates/build.yml
+      - jobs:
+        steps:
+        - template: yaml-templates/build.yml
+          parameters: 
+            solution: $(solution)
+            buildPlatform: $(buildPlatform)
+            buildConfiguration: $(buildConfiguration)
+        - template: yaml-templates/release.yml
+          dependsOn: []
