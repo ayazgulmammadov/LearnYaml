@@ -3,30 +3,37 @@ parameters:
     buildPlatform: ''
     buildConfiguration: ''
 
-pool:
-  vmImage: 'windows-latest'
+jobs:
+  - job: Build_Initial_${{parameters.name}}
+    pool:
+      vmImage: 'windows-latest'
+    continueOnError: 'true'
+    steps:
+    - task: NuGetToolInstaller@1
+      displayName: 'Use NuGet 4.4.1'
+      inputs:
+        versionSpec: 4.4.1
 
-steps:
-- task: NuGetToolInstaller@1
-  displayName: 'Use NuGet 4.4.1'
-  inputs:
-    versionSpec: 4.4.1
-- task: PowerShell@2
-  displayName: 'PowerShell Script'
-  inputs:
-    targetType: filePath
-    filePath: ./Scripts/BuildSolution.ps1
-    arguments: '-Solution $(Build.Repository.LocalPath)\Blogge.sln -ToolsDir "$(Agent.ToolsDirectory)" -destFolder $(Build.ArtifactStagingDirectory)'
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish BE'
-  inputs:
-    ArtifactName: drop.BE
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish scripts'
-  inputs:
-    PathtoPublish: Scripts
-    ArtifactName: drop.scripts
+    - task: PowerShell@2
+      displayName: 'PowerShell Script'
+      inputs:
+        targetType: filePath
+        filePath: ./Scripts/BuildSolution.ps1
+        arguments: '-Solution $(Build.Repository.LocalPath)\Blogge.sln -ToolsDir "$(Agent.ToolsDirectory)" -destFolder $(Build.ArtifactStagingDirectory)'
+
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish BE'
+      inputs:
+        ArtifactName: drop.BE
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish scripts'
+      inputs:
+        PathtoPublish: Scripts
+        ArtifactName: drop.scripts
+
