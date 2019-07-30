@@ -22,3 +22,4 @@ stages:
         buildPlatform: $(buildPlatform)
         buildConfiguration: $(buildConfiguration)
     - template: yaml-templates/release.yml  # Template reference
+      dependsOn: yaml-templates/build.yml
