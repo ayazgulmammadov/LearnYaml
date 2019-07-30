@@ -12,7 +12,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-    - template: yaml-templates\build.yml
+    - template: yaml-templates/build.yml
         parameters:
             solution: $(solution)
             buildPlatform: $(buildPlatform)
