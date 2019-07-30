@@ -6,7 +6,7 @@ parameters:
 jobs:
   - job: Build_Initial_${{parameters.name}}
     pool:
-      vmImage: 'windows-latest'
+      name: Hosted VS2017
     continueOnError: 'true'
     steps:
     - task: NuGetToolInstaller@1
