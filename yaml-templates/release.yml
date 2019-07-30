@@ -28,10 +28,10 @@ parameters:
           ScriptArguments: '-UploadArtifacts -ResourceGroupName $(ResourceGroupName) -TemplateParametersFile $(System.DefaultWorkingDirectory)/_ayazgulmammadov_Project01/azuredeploy.dev-parameters.json'
           azurePowerShellVersion: LatestVersion
     - task: keesschollaart.arm-outputs.arm-outputs.ARM Outputs@5
-        displayName: 'ARM Outputs'
-        inputs:
-            ConnectedServiceNameARM: 'Visual Studio Enterprise: BizSpark'
-            resourceGroupName: '$(ResourceGroupName)'
+      displayName: 'ARM Outputs'
+      inputs:
+          ConnectedServiceNameARM: 'Visual Studio Enterprise: BizSpark'
+          resourceGroupName: '$(ResourceGroupName)'
 
 
 
