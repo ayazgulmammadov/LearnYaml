@@ -3,7 +3,7 @@ parameters:
     buildPlatform: ''
     buildConfiguration: ''
 
-jobs:
+- job: Build_Initial_${{parameters.name}}
     pool:
       name: Hosted VS2017
     continueOnError: 'true'
