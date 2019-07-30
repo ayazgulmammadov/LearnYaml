@@ -11,9 +11,13 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-jobs:
+stages:
+  - stage: sandbox
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    dependsOn: []
+    jobs:
     - template: yaml-templates/build.yml
-        parameters:
-            solution: $(solution)
-            buildPlatform: $(buildPlatform)
-            buildConfiguration: $(buildConfiguration)
+      parameters:
+        solution: $(solution)
+        buildPlatform: $(buildPlatform)
+        buildConfiguration: $(buildConfiguration)
