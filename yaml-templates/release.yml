@@ -1,10 +1,6 @@
 parameters:
     ResourceGroupName: 'Blogge-Dev-RG'
-jobs:
-    - job: Release
-      pool:
-        vmImage: 'windows-latest'
-      continueOnError: 'true'
+
       steps:
       - task: PowerShell@2
         displayName: 'Install modules'
