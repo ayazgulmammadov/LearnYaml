@@ -18,9 +18,9 @@ stages:
     jobs:
     - job: Build
         - template: yaml-templates/build.yml
-            parameters:
-                solution: $(solution)
-                buildPlatform: $(buildPlatform)
-                buildConfiguration: $(buildConfiguration)
+          parameters:
+            solution: $(solution)
+            buildPlatform: $(buildPlatform)
+            buildConfiguration: $(buildConfiguration)
     - job: Release
         - template: yaml-templates/release.yml
