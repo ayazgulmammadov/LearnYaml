@@ -1,0 +1,37 @@
+parameters:
+    ResourceGroupName: 'Blogge-Dev-RG'
+jobs:
+    - job: Release
+      pool: 'windows-latest'
+      continueOnError: 'true'
+      steps:
+      - task: PowerShell@2
+        displayName: 'Install modules'
+        inputs:
+            targetType: filePath
+            filePath: './$(System.DefaultWorkingDirectory)/_ayazgulmammadov_Project01/Install-Modules.ps1'
+      - task: pascalnaber.PascalNaber-Xpirit-CreateSasToken.Xpirit-Vsts-Release-SasToken.createsastoken@1
+        displayName: 'Create SAS Token for Storage Account dbbackupblogge'
+        inputs:
+            ConnectedServiceName: 'Visual Studio Enterprise: BizSpark'
+            StorageAccountRM: dbbackupblogge
+            Permission: rwd
+            StorageContainerName: dbbackup
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'Replace tokens in **/*.json'
+        inputs:
+            rootDirectory: '$(System.DefaultWorkingDirectory)/_ayazgulmammadov_Project01'
+            targetFiles: '**/*.json'
+            escapeType: none
+      - task: AzurePowerShell@3
+        displayName: 'Azure PowerShell Deploy DEV Infrastructure'
+        inputs:
+            azureSubscription: 'Visual Studio Enterprise: BizSpark'
+            ScriptPath: '$(System.DefaultWorkingDirectory)/_ayazgulmammadov_Project01/Deploy-AzureResourceGroup.ps1'
+            ScriptArguments: '-UploadArtifacts -ResourceGroupName $(ResourceGroupName) -TemplateParametersFile $(System.DefaultWorkingDirectory)/_ayazgulmammadov_Project01/azuredeploy.dev-parameters.json'
+            azurePowerShellVersion: LatestVersion
+      - task: keesschollaart.arm-outputs.arm-outputs.ARM Outputs@5
+        displayName: 'ARM Outputs'
+        inputs:
+            ConnectedServiceNameARM: 'Visual Studio Enterprise: BizSpark'
+            resourceGroupName: '$(ResourceGroupName)'
