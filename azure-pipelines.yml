@@ -5,15 +5,15 @@
 
 trigger:
 - master
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 jobs:
-    - job: Build
-       - template: yaml-templates\build.yml
-         parameters:
+    - template: yaml-templates\build.yml
+        parameters:
             solution: $(solution)
             buildPlatform: $(buildPlatform)
             buildConfiguration: $(buildConfiguration)
