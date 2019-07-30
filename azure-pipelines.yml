@@ -16,14 +16,20 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
     dependsOn: []
     jobs:
-      - job:
-        steps:
-        - template: yaml-templates/build.yml
-          parameters: 
-            solution: $(solution)
-            buildPlatform: $(buildPlatform)
-            buildConfiguration: $(buildConfiguration)
-      - job:
-        steps:
-        - template: yaml-templates/release.yml
+    - job: Build
+      pool:
+        vmImage: 'Hosted VS2017'
+      steps:
+      - template: yaml-templates/build.yml
+        parameters: 
+          solution: $(solution)
+          buildPlatform: $(buildPlatform)
+          buildConfiguration: $(buildConfiguration)
+
+    - job: Release
+      pool:
+        vmImage: 'windows-latest'
+      steps:
+      - template: yaml-templates/release.yml
+
 
