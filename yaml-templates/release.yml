@@ -2,7 +2,8 @@ parameters:
     ResourceGroupName: 'Blogge-Dev-RG'
 jobs:
     - job: Release
-      pool: 'windows-latest'
+      pool:
+        vmImage: 'windows-latest'
       continueOnError: 'true'
       steps:
       - task: PowerShell@2
