@@ -26,10 +26,4 @@ stages:
           buildPlatform: $(buildPlatform)
           buildConfiguration: $(buildConfiguration)
 
-    - job: Release
-      pool:
-        vmImage: 'windows-latest'
-      steps:
-      - template: yaml-templates/release.yml
-
 
