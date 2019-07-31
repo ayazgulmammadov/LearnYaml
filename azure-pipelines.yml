@@ -7,9 +7,14 @@ trigger:
 - master
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - group: keyVaults
+  - name: solution
+    value: '**/*.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
+
 
 stages:
   - stage: sandbox
@@ -26,8 +31,9 @@ stages:
           buildPlatform: $(buildPlatform)
           buildConfiguration: $(buildConfiguration)
 
-    - job: Release
+    - job: Deploy
       pool:
         vmImage: 'windows-latest'
+      dependsOn: Build
       steps:
-      - template: yaml-templates/release.yml
+      - template: yaml-templates/deploy.yml

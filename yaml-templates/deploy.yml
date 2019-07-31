@@ -1,0 +1,37 @@
+
+    steps:
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Build Backend'
+      inputs:
+        artifactName: drop.BE
+        downloadPath: '$(System.ArtifactsDirectory)/drop.BE'
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Build Scripts'
+      inputs:
+        artifactName: drop.scripts
+        downloadPath: '$(System.ArtifactsDirectory)/drop.scripts'
+    - task: CopyFiles@2
+      displayName: 'Copy Mvc.sitemap from bin to root folder'
+      inputs:
+        SourceFolder: '$(System.ArtifactsDirectory)/drop.BE/bin'
+        Contents: Mvc.sitemap
+        TargetFolder: '$(System.ArtifactsDirectory)/drop.BE'
+    - task: PowerShell@2
+      displayName: 'SQL Connection String'
+      inputs:
+        targetType: filePath
+        filePath: '$(System.ArtifactsDirectory)/drop.scripts/SqlDBConnectionString.ps1'
+        arguments: > 
+          '-webConfigPath $(System.ArtifactsDirectory)/drop.BE/Web.config 
+          -connectionString "$(DatabaseConnectionString)"'
+    - task: PowerShell@2
+      displayName: Deploy
+      inputs:
+        targetType: filePath
+        filePath: '$(System.ArtifactsDirectory)/drop.scripts/Deploy.ps1'
+        arguments: > 
+          '-destpath C:\inetpub\wwwroot\Blogge -apppackage $(System.ArtifactsDirectory)/drop.BE 
+          -serverurl $(ServerFqdn)  -username $(vmAdminUserName) -password $(vmAdminPassword)'
+
+
+
