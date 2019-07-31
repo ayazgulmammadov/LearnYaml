@@ -4,12 +4,12 @@
       displayName: 'Download Build Backend'
       inputs:
         artifactName: drop.BE
-        downloadPath: '$(System.ArtifactsDirectory)/drop.BE'
+        downloadPath: '$(System.ArtifactsDirectory)'
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Build Scripts'
       inputs:
         artifactName: drop.scripts
-        downloadPath: '$(System.ArtifactsDirectory)/drop.scripts'
+        downloadPath: '$(System.ArtifactsDirectory)/scripts'
     - task: CopyFiles@2
       displayName: 'Copy Mvc.sitemap from bin to root folder'
       inputs:
